@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "TankRoguelike",
+			"Path": "D:\\GitHub\\TankRoguelike\\Source\\TankRoguelike.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "TankRoguelikeEditor",
+			"Path": "D:\\GitHub\\TankRoguelike\\Source\\TankRoguelikeEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
