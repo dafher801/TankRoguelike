@@ -3,16 +3,16 @@
 
 #include "CoreMinimal.h"
 #include "Unit.h"
-#include "Tank.generated.h"
+#include "BaseTank.generated.h"
 
 UCLASS()
-class TANKROGUELIKE_API ATank : public AUnit
+class TANKROGUELIKE_API ABaseTank : public AUnit
 {
 	GENERATED_BODY()
 
 public:
-	
-	ATank();
+
+	ABaseTank();
 
 	virtual void Init() override;
 

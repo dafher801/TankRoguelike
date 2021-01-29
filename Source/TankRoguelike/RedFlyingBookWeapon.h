@@ -13,7 +13,7 @@ class TANKROGUELIKE_API URedFlyingBookWeapon : public UWeaponComponent
 public:
 
 	URedFlyingBookWeapon();
-	
+
 	virtual void Aim() override;
 
 	virtual void InitFire(class AUnit* UnitInstigator) override;

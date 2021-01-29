@@ -1,8 +1,9 @@
 
 #include "BaseTankWeapon.h"
 #include "BaseTankBullet.h"
-#include "Kismet/GamePlayStatics.h"
+#include "Kismet/GameplayStatics.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperFlipbook.h"
 
 UBaseTankWeapon::UBaseTankWeapon()
 	: UWeaponComponent(EUnitTag::TANK)

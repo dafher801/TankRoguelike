@@ -9,7 +9,7 @@ UCLASS()
 class TANKROGUELIKE_API AGreenFlyingBook : public AEnemy
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	AGreenFlyingBook();

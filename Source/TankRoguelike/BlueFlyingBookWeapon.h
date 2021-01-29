@@ -9,7 +9,7 @@ UCLASS()
 class TANKROGUELIKE_API UBlueFlyingBookWeapon : public UWeaponComponent
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	UBlueFlyingBookWeapon();

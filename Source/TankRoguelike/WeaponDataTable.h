@@ -18,7 +18,7 @@ struct FWeaponData : public FActorData
 };
 
 UCLASS()
-class TANKROGUELIKE_API AWeaponDataTable : public AActorDataTable
+class TANKROGUELIKE_API UWeaponDataTable : public UActorDataTable
 {
 	GENERATED_BODY()
 };

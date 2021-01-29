@@ -1,6 +1,7 @@
 
 #include "RedFlyingBookBullet.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperFlipbook.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 

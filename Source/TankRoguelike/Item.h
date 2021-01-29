@@ -10,8 +10,8 @@ UCLASS()
 class TANKROGUELIKE_API AItem : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 
 	AItem();
 

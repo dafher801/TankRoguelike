@@ -43,13 +43,13 @@ public:
 	class UWeaponComponent* GetWeaponComponent() const;
 
 protected:
-	
+
 	virtual void BeginPlay() override;
 
 	// 아래의 두 함수는 무조건 Tick함수 내에서 실행되어야 합니다.
 	virtual void Move();
 	virtual void Fire(float DelatTime);
-	
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Collision")

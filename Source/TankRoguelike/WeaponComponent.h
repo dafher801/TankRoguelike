@@ -15,7 +15,7 @@ UCLASS()
 class TANKROGUELIKE_API UWeaponComponent : public UPrimitiveComponent
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	UWeaponComponent() {}
@@ -25,7 +25,7 @@ public:
 	virtual void Init();
 
 	virtual void InitFire(class AUnit* UnitInstigator);
-	
+
 	virtual void Aim();
 
 	void SetActivated(bool Activated);

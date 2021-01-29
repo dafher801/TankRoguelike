@@ -9,7 +9,7 @@ UCLASS()
 class TANKROGUELIKE_API AHPItem : public AItem
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	AHPItem();
@@ -17,8 +17,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		virtual void OnHit(class UPrimitiveComponent* OtherComp, class AActor* OtherActor, class UPrimitiveComponent* Other, FVector NormalImpulse, const FHitResult& Hit);
-
+		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);
 
 protected:
 

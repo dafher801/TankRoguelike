@@ -9,12 +9,10 @@ USTRUCT()
 struct FItemData : public FActorData
 {
 	GENERATED_BODY()
-
 };
 
 UCLASS()
-class TANKROGUELIKE_API AItemDataTable : public AActorDataTable
+class TANKROGUELIKE_API UItemDataTable : public UActorDataTable
 {
 	GENERATED_BODY()
-	
 };

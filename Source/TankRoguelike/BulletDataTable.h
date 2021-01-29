@@ -2,7 +2,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "ActorDataTable.h"
 #include "BulletDataTable.generated.h"
 
@@ -13,7 +12,7 @@ struct FBulletData : public FActorData
 };
 
 UCLASS()
-class TANKROGUELIKE_API ABulletDataTable : public AActorDataTable
+class TANKROGUELIKE_API UBulletDataTable : public UActorDataTable
 {
 	GENERATED_BODY()
 };

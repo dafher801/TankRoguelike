@@ -25,7 +25,7 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
-	
+
 	virtual void BeginPlay() override;
 
 	// 아래의 두 함수는 무조건 Tick함수 내에서 실행되어야 합니다.
@@ -34,6 +34,6 @@ protected:
 
 protected:
 
-	class ATank* Player;
+	class ABaseTank* Player;
 	FVector PlayerLocation;
 };

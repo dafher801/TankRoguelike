@@ -1,7 +1,7 @@
 
 #include "GreenFlyingBookWeapon.h"
 #include "GreenFlyingBookBullet.h"
-#include "Kismet/GamePlayStatics.h"
+#include "Kismet/GameplayStatics.h"
 
 UGreenFlyingBookWeapon::UGreenFlyingBookWeapon()
 	: UWeaponComponent(EUnitTag::GREENFLYINGBOOK)

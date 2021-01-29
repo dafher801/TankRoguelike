@@ -2,10 +2,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "PaperFlipbook.h"
+#include "UObject/NoExportTypes.h"
 #include "Engine/DataTable.h"
 #include "ActorDataTable.generated.h"
+
+class UPaperFlipbook;
 
 typedef ConstructorHelpers::FObjectFinder<UPaperFlipbook> UFlipbookAsset;
 typedef ConstructorHelpers::FObjectFinder<UDataTable> UDataTableAsset;
@@ -88,19 +89,7 @@ struct FActorData : public FTableRowBase
 };
 
 UCLASS()
-class TANKROGUELIKE_API AActorDataTable : public AActor
+class TANKROGUELIKE_API UActorDataTable : public UObject
 {
 	GENERATED_BODY()
-	
-public:	
-
-	AActorDataTable();
-
-protected:
-
-	virtual void BeginPlay() override;
-
-public:	
-
-	virtual void Tick(float DeltaTime) override;
 };

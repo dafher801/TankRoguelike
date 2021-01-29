@@ -1,7 +1,7 @@
 
 #include "RedFlyingBookWeapon.h"
 #include "RedFlyingBookBullet.h"
-#include "Kismet/GamePlayStatics.h"
+#include "Kismet/GameplayStatics.h"
 
 URedFlyingBookWeapon::URedFlyingBookWeapon()
 	: UWeaponComponent(EUnitTag::REDFLYINGBOOK)

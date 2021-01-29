@@ -9,7 +9,7 @@ UCLASS()
 class TANKROGUELIKE_API ARedFlyingBookBullet : public ABullet
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	ARedFlyingBookBullet();

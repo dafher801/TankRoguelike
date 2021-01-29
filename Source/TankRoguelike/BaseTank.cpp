@@ -1,15 +1,17 @@
 
-#include "Tank.h"
+#include "BaseTank.h"
 #include "BaseTankWeapon.h"
-#include "TankRoguelikeGameMode.h"
+#include "TankRoguelikeGameModeBase.h"
 #include "Item.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperFlipbook.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
-ATank::ATank()
+ABaseTank::ABaseTank()
 	: AUnit(EUnitTag::TANK)
 {
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -18,9 +20,9 @@ ATank::ATank()
 	Cast<UBoxComponent>(ShapeCollision)->SetBoxExtent(FVector(32.0f, 15.0f, 48.0f), true);
 	ShapeCollision->BodyInstance.SetCollisionProfileName("Player");
 
-	static UFlipbookAsset TankBodyIdle = TEXT("/Game/Flipbooks/Tanks/TankBodyIdle");
+	static UFlipbookAsset BaseTankBodyIdle = TEXT("/Game/Flipbooks/Tanks/TankBodyIdle");
 	BodyFlipbook->SetRelativeLocation(FVector(0.0f, 0.0f, -16.0f));
-	BodyFlipbook->SetFlipbook(TankBodyIdle.Object);
+	BodyFlipbook->SetFlipbook(BaseTankBodyIdle.Object);
 
 	WeaponComponent = CreateDefaultSubobject<UBaseTankWeapon>(TEXT("WeaponComponent"));
 	WeaponComponent->SetupAttachment(BodyFlipbook);
@@ -38,7 +40,7 @@ ATank::ATank()
 	Camera->SetupAttachment(SpringArm);
 }
 
-void ATank::Init()
+void ABaseTank::Init()
 {
 	Super::Init();
 
@@ -52,7 +54,7 @@ void ATank::Init()
 	SetActorLocation(FVector(0.0f, 0.0f, 0.0f));
 }
 
-void ATank::Tick(float DeltaTime)
+void ABaseTank::Tick(float DeltaTime)
 {
 	if (bActivated)
 	{
@@ -67,18 +69,18 @@ void ATank::Tick(float DeltaTime)
 	}
 }
 
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ABaseTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	InputComponent->BindAxis("MoveUpDown", this, &ATank::InputUpDown);
-	InputComponent->BindAxis("MoveLeftRight", this, &ATank::InputLeftRight);
-	InputComponent->BindAction("Fire", IE_Pressed, this, &ATank::PressedLeftMouse);
-	InputComponent->BindAction("Fire", IE_Repeat, this, &ATank::RepeatLeftMouse);
-	InputComponent->BindAction("Fire", IE_Released, this, &ATank::ReleasedLeftMouse);
+	InputComponent->BindAxis("MoveUpDown", this, &ABaseTank::InputUpDown);
+	InputComponent->BindAxis("MoveLeftRight", this, &ABaseTank::InputLeftRight);
+	InputComponent->BindAction("Fire", IE_Pressed, this, &ABaseTank::PressedLeftMouse);
+	InputComponent->BindAction("Fire", IE_Repeat, this, &ABaseTank::RepeatLeftMouse);
+	InputComponent->BindAction("Fire", IE_Released, this, &ABaseTank::ReleasedLeftMouse);
 }
 
-float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+float ABaseTank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	// 현재 탱크의 가로 : 세로 비율은 2 : 3 이다.
 
@@ -100,30 +102,30 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	if (CurrentStatus.HP <= 0.0f)
 	{
 		CurrentStatus.HP = 0.0f;
-		Cast<ATankRoguelikeGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->GameOver();
+		Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->GameOver();
 	}
 
 	return DamageAmount;
 }
 
-void ATank::GetItem(AItem* Item)
+void ABaseTank::GetItem(AItem* Item)
 {
 	CurrentStatus += Item->GetStatus();
 }
 
-void ATank::AddScore(int NewScore)
+void ABaseTank::AddScore(int NewScore)
 {
 	Score += NewScore;
 }
 
-void ATank::BeginPlay()
+void ABaseTank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ShapeCollision->OnComponentHit.AddDynamic(this, &ATank::OnHit);
+	ShapeCollision->OnComponentHit.AddDynamic(this, &ABaseTank::OnHit);
 }
 
-void ATank::Move()
+void ABaseTank::Move()
 {
 	MoveVector = FVector(CurrentUpDownValue, CurrentLeftRightValue, 0.0f);
 
@@ -134,33 +136,33 @@ void ATank::Move()
 	}
 }
 
-void ATank::Fire(float DeltaTime)
+void ABaseTank::Fire(float DeltaTime)
 {
 	if (bPressedLeftMouse)
 		Super::Fire(DeltaTime);
 }
 
-void ATank::InputUpDown(float NewInputValue)
+void ABaseTank::InputUpDown(float NewInputValue)
 {
 	CurrentUpDownValue = NewInputValue;
 }
 
-void ATank::InputLeftRight(float NewInputValue)
+void ABaseTank::InputLeftRight(float NewInputValue)
 {
 	CurrentLeftRightValue = NewInputValue;
 }
 
-void ATank::PressedLeftMouse(FKey key)
+void ABaseTank::PressedLeftMouse(FKey key)
 {
 	bPressedLeftMouse = true;
 }
 
-void ATank::RepeatLeftMouse(FKey key)
+void ABaseTank::RepeatLeftMouse(FKey key)
 {
-	
+
 }
 
-void ATank::ReleasedLeftMouse(FKey key)
+void ABaseTank::ReleasedLeftMouse(FKey key)
 {
 	bPressedLeftMouse = false;
 }

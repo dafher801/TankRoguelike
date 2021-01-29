@@ -7,7 +7,7 @@ AItem::AItem()
 	: Status({})
 	, bActivated(false)
 {
- 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 	Tags.Add("Item");
 
 	static UDataTableAsset ItemDataTable = TEXT("/Game/DataTables/ItemDataTable");

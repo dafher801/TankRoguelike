@@ -2,7 +2,8 @@
 #include "WeaponComponent.h"
 #include "Unit.h"
 #include "Bullet.h"
-#include "Kismet/GamePlayStatics.h"
+#include "WeaponDataTable.h"
+#include "Kismet/GameplayStatics.h"
 #include "PaperFlipbookComponent.h"
 
 // 평소대로면 WeaponFlipbook의 생성과 기본적인 세팅을 여기서 해야하지만

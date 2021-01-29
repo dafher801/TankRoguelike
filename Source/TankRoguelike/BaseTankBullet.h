@@ -9,7 +9,7 @@ UCLASS()
 class TANKROGUELIKE_API ABaseTankBullet : public ABullet
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	ABaseTankBullet();

@@ -55,7 +55,7 @@ AUnit::AUnit(const EUnitTag& UnitTag)
 	Direction->SetupAttachment(ShapeCollision);
 
 	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
-	
+
 	SetActivated(false);
 }
 

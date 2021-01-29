@@ -57,7 +57,7 @@ ABullet::ABullet(const EUnitTag& UnitTag)
 	Movement->InitialSpeed = BulletData->Status.MoveSpeed;
 	Movement->MaxSpeed = BulletData->Status.MoveSpeed;
 	Movement->ProjectileGravityScale = 0.0f;
-	
+
 	SetActivated(false);
 }
 
@@ -72,7 +72,7 @@ void ABullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* Instigat
 	Damage = InstigatorData->GetCurrentStatus().ATK;
 	MaxMovementDistance = InstigatorData->GetCurrentStatus().Range;
 	CurrentMovementDistance = 0.0f;
-	
+
 	SetActivated(true);
 }
 

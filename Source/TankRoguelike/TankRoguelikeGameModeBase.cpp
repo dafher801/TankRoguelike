@@ -1,6 +1,6 @@
 
-#include "TankRoguelikeGameMode.h"
-#include "Tank.h"
+#include "TankRoguelikeGameModeBase.h"
+#include "BaseTank.h"
 #include "GreenFlyingBook.h"
 #include "RedFlyingBook.h"
 #include "BlueFlyingBook.h"
@@ -8,13 +8,15 @@
 #include "UnitDataTable.h"
 #include "HPItem.h"
 #include "TankRoguelikePlayerController.h"
+
+#include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 
 #include <random>
 #include <ctime>
 
-ATankRoguelikeGameMode::ATankRoguelikeGameMode()
+ATankRoguelikeGameModeBase::ATankRoguelikeGameModeBase()
 	: NecessaryTimeForSpawn(2000.0f)
 	, CurrentTimeForSpawn(0.0f)
 	, KindOfEnemyNum(3)
@@ -35,12 +37,12 @@ ATankRoguelikeGameMode::ATankRoguelikeGameMode()
 	DefaultPawnClass = nullptr;
 }
 
-void ATankRoguelikeGameMode::Tick(float DeltaTime)
+void ATankRoguelikeGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ATankRoguelikeGameMode::SpawnItem(FVector SpawnLocation)
+void ATankRoguelikeGameModeBase::SpawnItem(FVector SpawnLocation)
 {
 	if (rand() % 2)
 		return;
@@ -59,7 +61,7 @@ void ATankRoguelikeGameMode::SpawnItem(FVector SpawnLocation)
 	}
 }
 
-void ATankRoguelikeGameMode::SpawnEnemy()
+void ATankRoguelikeGameModeBase::SpawnEnemy()
 {
 	int Index = rand() % KindOfEnemyNum;
 	FVector SpawnLocation;
@@ -90,14 +92,14 @@ void ATankRoguelikeGameMode::SpawnEnemy()
 		CurrentEnemyNum = 0;
 }
 
-void ATankRoguelikeGameMode::ChangeWidget(TSubclassOf<UUserWidget> NewWidget)
+void ATankRoguelikeGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidget)
 {
 	if (CurrentWidget)
 	{
 		CurrentWidget->RemoveFromViewport();
 		CurrentWidget = nullptr;
 	}
-	
+
 	if (NewWidget)
 	{
 		CurrentWidget = CreateWidget(GetWorld(), NewWidget);
@@ -107,16 +109,16 @@ void ATankRoguelikeGameMode::ChangeWidget(TSubclassOf<UUserWidget> NewWidget)
 	}
 }
 
-void ATankRoguelikeGameMode::StartGame()
+void ATankRoguelikeGameModeBase::StartGame()
 {
 	bPlaying = true;
 	Player->Init();
 
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetPause(false);
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ATankRoguelikeGameMode::SpawnEnemy, 2.0f, true);
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ATankRoguelikeGameModeBase::SpawnEnemy, 2.0f, true);
 }
 
-void ATankRoguelikeGameMode::ClearGame()
+void ATankRoguelikeGameModeBase::ClearGame()
 {
 	int i, j;
 
@@ -150,16 +152,16 @@ void ATankRoguelikeGameMode::ClearGame()
 	Player->SetActorLocation(FVector(0.0f, 0.0f, 0.0f));
 }
 
-ATank* ATankRoguelikeGameMode::GetPlayer() const
+ABaseTank* ATankRoguelikeGameModeBase::GetPlayer() const
 {
 	return Player;
 }
 
-void ATankRoguelikeGameMode::BeginPlay()
+void ATankRoguelikeGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Player = Cast<ATank>(GetWorld()->SpawnActor<ATank>(ATank::StaticClass()));
+	Player = Cast<ABaseTank>(GetWorld()->SpawnActor<ABaseTank>(ABaseTank::StaticClass()));
 
 	for (int i = 0; i < MaxEnemyNum; i++)
 	{

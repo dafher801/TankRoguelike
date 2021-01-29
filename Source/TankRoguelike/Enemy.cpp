@@ -1,14 +1,15 @@
 
 #include "Enemy.h"
-#include "Tank.h"
-#include "TankRoguelikeGameMode.h"
+#include "BaseTank.h"
+#include "TankRoguelikeGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/ShapeComponent.h"
 
 AEnemy::AEnemy(const EUnitTag& UnitTag)
 	: AUnit(UnitTag)
 {
 	Tags.Add("Enemy");
-	
+
 	ShapeCollision->BodyInstance.SetCollisionProfileName("Enemy");
 }
 
@@ -38,7 +39,7 @@ float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEv
 
 	if (Player && CurrentStatus.HP <= 0.0f)
 	{
-		Cast<ATankRoguelikeGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->SpawnItem(GetActorLocation());
+		Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->SpawnItem(GetActorLocation());
 		Player->AddScore(Score);
 	}
 
@@ -49,7 +50,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Player = Cast<ATankRoguelikeGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->GetPlayer();
+	Player = Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->GetPlayer();
 }
 
 void AEnemy::Move()

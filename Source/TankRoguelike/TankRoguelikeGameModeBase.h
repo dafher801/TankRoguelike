@@ -2,19 +2,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
 #include "Containers/Array.h"
-#include "TankRoguelikeGameMode.generated.h"
+#include "TankRoguelikeGameModeBase.generated.h"
 
 UCLASS(BlueprintType)
-class TANKROGUELIKE_API ATankRoguelikeGameMode : public AGameModeBase
+class TANKROGUELIKE_API ATankRoguelikeGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 public:
 
-	ATankRoguelikeGameMode();
+	ATankRoguelikeGameModeBase();
 
 	virtual void Tick(float DeltaTime) override;
 
@@ -33,7 +32,7 @@ public:
 		void GameOver();
 
 	UFUNCTION(BlueprintCallable)
-		class ATank* GetPlayer() const;
+		class ABaseTank* GetPlayer() const;
 
 protected:
 
@@ -52,7 +51,7 @@ protected:
 		class UUserWidget* CurrentWidget;
 
 	UPROPERTY(BlueprintReadWrite)
-		class ATank* Player;
+		class ABaseTank* Player;
 
 	UPROPERTY(BlueprintReadWrite)
 		int TotalScore;

@@ -16,7 +16,7 @@ struct FUnitData : public FActorData
 };
 
 UCLASS()
-class TANKROGUELIKE_API AUnitDataTable : public AActorDataTable
+class TANKROGUELIKE_API UUnitDataTable : public UActorDataTable
 {
 	GENERATED_BODY()
 };

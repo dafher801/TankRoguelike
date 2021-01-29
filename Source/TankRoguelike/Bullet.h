@@ -10,7 +10,7 @@ UCLASS()
 class TANKROGUELIKE_API ABullet : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	ABullet() {}

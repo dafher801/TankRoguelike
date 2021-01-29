@@ -3,6 +3,7 @@
 #include "RedFlyingBookWeapon.h"
 #include "Components/BoxComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperFlipbook.h"
 #include "Math/Color.h"
 
 ARedFlyingBook::ARedFlyingBook()

@@ -1,8 +1,9 @@
 
 #include "HPItem.h"
-#include "Tank.h"
+#include "BaseTank.h"
 #include "Components/BoxComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperFlipbook.h"
 
 AHPItem::AHPItem()
 {
@@ -20,19 +21,19 @@ void AHPItem::Tick(float DeltaTime)
 	}
 }
 
-void AHPItem::OnHit(UPrimitiveComponent* OtherComp, AActor* OtherActor, UPrimitiveComponent* Other, FVector NormalImpulse, const FHitResult& Hit)
+void AHPItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
 {
 	if (OtherActor->ActorHasTag("Player"))
 	{
-		float BaseHP = Cast<ATank>(OtherActor)->GetBaseStatus().HP;
-		float CurrentHP = Cast<ATank>(OtherActor)->GetCurrentStatus().HP;
+		float BaseHP = Cast<ABaseTank>(OtherActor)->GetBaseStatus().HP;
+		float CurrentHP = Cast<ABaseTank>(OtherActor)->GetCurrentStatus().HP;
 
 		Status.HP = BaseHP / 10.0f;
 
 		if (CurrentHP + Status.HP > BaseHP)
 			Status.HP = BaseHP - CurrentHP;
-		
-		Cast<ATank>(OtherActor)->GetItem(this);
+
+		Cast<ABaseTank>(OtherActor)->GetItem(this);
 		SetActivated(false);
 	}
 }
@@ -41,5 +42,5 @@ void AHPItem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BoxCollision->OnComponentHit.AddDynamic(this, &AHPItem::OnHit);
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AHPItem::OnOverlapBegin);
 }

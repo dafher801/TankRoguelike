@@ -2,6 +2,7 @@
 #include "BaseTankBullet.h"
 #include "Components/SphereComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperFlipbook.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 ABaseTankBullet::ABaseTankBullet()
