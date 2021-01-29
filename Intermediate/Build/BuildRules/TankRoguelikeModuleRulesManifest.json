@@ -1,8 +1,0 @@
-{
-	"SourceFiles": [
-		"D:\\GitHub\\TankRoguelike\\Source\\TankRoguelike\\TankRoguelike.Build.cs",
-		"D:\\GitHub\\TankRoguelike\\Source\\TankRoguelike.Target.cs",
-		"D:\\GitHub\\TankRoguelike\\Source\\TankRoguelikeEditor.Target.cs"
-	],
-	"EngineVersion": "4.25.4"
-}
