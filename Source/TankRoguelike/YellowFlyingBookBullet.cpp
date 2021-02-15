@@ -26,7 +26,6 @@ void AYellowFlyingBookBullet::Tick(float DeltaTime)
 {
 	if (bActivated)
 	{
-		float cx, cy;
 		Super::Tick(DeltaTime);
 	}
 }

@@ -11,9 +11,6 @@
 
 ABlueFlyingBookBullet::ABlueFlyingBookBullet()
 	: ABullet(EUnitTag::BLUEFLYINGBOOK)
-	, MaxTheta(10.0f)
-	, DistanceForRotate(100.0f)
-	, RestForRotate(DistanceForRotate)
 {
 	Cast<USphereComponent>(ShapeCollision)->SetSphereRadius(20.0f);
 	ShapeCollision->BodyInstance.SetCollisionProfileName("EnemyAttack");
