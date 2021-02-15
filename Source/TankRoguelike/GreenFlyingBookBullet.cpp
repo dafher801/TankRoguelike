@@ -17,7 +17,7 @@ AGreenFlyingBookBullet::AGreenFlyingBookBullet()
 	BulletFlipbook->SetFlipbook(Bullet.Object);
 }
 
-void AGreenFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* UnitInstigator)
+void AGreenFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* InstigatorData)
 {
-	Super::Init(SpawnLocation, FireRotation, UnitInstigator);
+	Super::Init(SpawnLocation, FireRotation, InstigatorData);
 }

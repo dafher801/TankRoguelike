@@ -17,6 +17,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void SpawnEnemy();
+
 	void SpawnItem(FVector SpawnLocation);
 
 	UFUNCTION(BlueprintCallable)
@@ -26,7 +28,10 @@ public:
 		void StartGame();
 
 	UFUNCTION(BlueprintCallable)
-		void ClearGame();
+		void InitGame();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void StageClear();
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void GameOver();
@@ -34,18 +39,32 @@ public:
 	UFUNCTION(BlueprintCallable)
 		class ABaseTank* GetPlayer() const;
 
+	UFUNCTION(BlueprintCallable)
+		int GetCurrentStage() const;
+
+	UFUNCTION(BlueprintCallable)
+		int GetCountDownTime() const;
+
+	UFUNCTION()
+		bool GetPlaying() const;
+
+	bool PayScore();
+
 protected:
 
 	virtual void BeginPlay() override;
 
 private:
 
-	void SpawnEnemy();
+	void CountDown();
 
 protected:
 
 	UPROPERTY()
-		FTimerHandle TimerHandle;
+		FTimerHandle SpawnEnemyTimer;
+
+	UPROPERTY()
+		FTimerHandle CountDownTimer;
 
 	UPROPERTY()
 		class UUserWidget* CurrentWidget;
@@ -68,6 +87,8 @@ protected:
 	int KindOfEnemyNum;
 	int MaxEnemyNum;
 	int CurrentEnemyNum;
-
 	int CurrentItemNum;
+	int CurrentStage;
+
+	int CountDownTime;
 };

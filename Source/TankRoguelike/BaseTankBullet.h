@@ -14,9 +14,9 @@ public:
 
 	ABaseTankBullet();
 
-	virtual void Tick(float DeltaTime) override;
+	virtual void Init(FVector SpawnLocation, FRotator FireRotation, class AUnit* InstigatorData);
 
-	virtual void Init(FVector SpawnLocation, FRotator FireRotation, class AUnit* UnitInstigator);
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 

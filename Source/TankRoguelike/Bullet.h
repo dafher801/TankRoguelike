@@ -6,6 +6,8 @@
 #include "BulletDataTable.h"
 #include "Bullet.generated.h"
 
+// 총알이 날아가는 궤적은 이곳에서 결정합니다.
+
 UCLASS()
 class TANKROGUELIKE_API ABullet : public AActor
 {

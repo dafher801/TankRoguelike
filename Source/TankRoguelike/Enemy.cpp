@@ -4,6 +4,7 @@
 #include "TankRoguelikeGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/ShapeComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 AEnemy::AEnemy(const EUnitTag& UnitTag)
 	: AUnit(UnitTag)
@@ -11,11 +12,22 @@ AEnemy::AEnemy(const EUnitTag& UnitTag)
 	Tags.Add("Enemy");
 
 	ShapeCollision->BodyInstance.SetCollisionProfileName("Enemy");
+
+	UpgradeRatio = 0.1f;
 }
 
 void AEnemy::Init()
 {
 	Super::Init();
+
+	for (int i = 1; i < Cast<ATankRoguelikeGameModeBase>
+		(UGameplayStatics::GetGameMode(GetWorld()))->GetCurrentStage(); i++)
+	{
+		LevelUp();
+	}
+
+	Movement->MaxSpeed = CurrentStatus.MoveSpeed;
+	Movement->TurningBoost = CurrentStatus.MoveSpeed;
 
 	SpawnDefaultController();
 }
@@ -44,6 +56,12 @@ float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEv
 	}
 
 	return DamageAmount;
+}
+
+void AEnemy::LevelUp()
+{
+	CurrentStatus += (BaseStatus * UpgradeRatio);
+	CurrentStatus.DEF += (BaseStatus.HP * UpgradeRatio * UpgradeRatio);
 }
 
 void AEnemy::BeginPlay()

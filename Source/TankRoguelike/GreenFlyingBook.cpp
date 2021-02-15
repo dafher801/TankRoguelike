@@ -22,8 +22,6 @@ AGreenFlyingBook::AGreenFlyingBook()
 void AGreenFlyingBook::Init()
 {
 	Super::Init();
-
-	SetActorLocation(FVector(100.0f, 600.0f, 10.0f));
 }
 
 void AGreenFlyingBook::Tick(float DeltaTime)

@@ -1,5 +1,6 @@
 
 #include "BaseTankBullet.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperFlipbook.h"
@@ -15,9 +16,9 @@ ABaseTankBullet::ABaseTankBullet()
 	BulletFlipbook->SetFlipbook(TankBulletIdle.Object);
 }
 
-void ABaseTankBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* UnitInstigator)
+void ABaseTankBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* InstigatorData)
 {
-	Super::Init(SpawnLocation, FireRotation, UnitInstigator);
+	Super::Init(SpawnLocation, FireRotation, InstigatorData);
 }
 
 void ABaseTankBullet::Tick(float DeltaTime)

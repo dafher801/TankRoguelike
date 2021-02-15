@@ -14,9 +14,9 @@ public:
 
 	URedFlyingBookWeapon();
 
-	virtual void Aim() override;
+	virtual void InitFire(class AUnit* InstigatorData) override;
 
-	virtual void InitFire(class AUnit* UnitInstigator) override;
+	virtual void Aim() override;
 
 protected:
 

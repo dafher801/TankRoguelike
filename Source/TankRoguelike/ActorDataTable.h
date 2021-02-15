@@ -25,7 +25,8 @@ enum class EUnitTag
 	TANK,
 	GREENFLYINGBOOK,
 	REDFLYINGBOOK,
-	BLUEFLYINGBOOK
+	BLUEFLYINGBOOK,
+	YELLOWFLYINGBOOK
 };
 
 USTRUCT()
@@ -40,16 +41,30 @@ struct FStatus : public FTableRowBase
 		float ATK;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+		float AttackSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 		float DEF;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 		float MoveSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-		float AttackSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 		float Range;
+
+	FORCEINLINE struct FStatus operator*(float Ratio)
+	{
+		FStatus ret;
+
+		ret.HP = HP * Ratio;
+		ret.ATK = ATK * Ratio;
+		ret.AttackSpeed = AttackSpeed * Ratio;
+		ret.DEF = DEF * Ratio;
+		ret.MoveSpeed = MoveSpeed * Ratio;
+		ret.Range = Range * Ratio;
+
+		return ret;
+	}
 
 	FORCEINLINE struct FStatus& operator+=(const FStatus& Status)
 	{

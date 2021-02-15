@@ -14,5 +14,5 @@ public:
 
 	ARedFlyingBookBullet();
 
-	virtual void Init(FVector SpawnLocation, FRotator FireRotation, class AUnit* UnitInstigator) override;
+	virtual void Init(FVector SpawnLocation, FRotator FireRotation, class AUnit* InstigatorData) override;
 };

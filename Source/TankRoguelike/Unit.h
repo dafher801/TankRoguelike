@@ -86,4 +86,8 @@ protected:
 	bool bActivated;
 
 	int Score;
+
+	float UpgradeRatio;
+
+	int KindOfStatus;
 };

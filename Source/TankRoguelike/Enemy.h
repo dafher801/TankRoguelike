@@ -24,6 +24,8 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	void LevelUp();
+
 protected:
 
 	virtual void BeginPlay() override;

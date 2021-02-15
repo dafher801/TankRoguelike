@@ -31,7 +31,10 @@ void AHPItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 		Status.HP = BaseHP / 10.0f;
 
 		if (CurrentHP + Status.HP > BaseHP)
+		{
 			Status.HP = BaseHP - CurrentHP;
+			Cast<ABaseTank>(OtherActor)->AddScore(BaseHP / 10.0f - Status.HP);
+		}
 
 		Cast<ABaseTank>(OtherActor)->GetItem(this);
 		SetActivated(false);

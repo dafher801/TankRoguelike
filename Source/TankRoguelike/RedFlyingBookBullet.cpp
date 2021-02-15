@@ -15,9 +15,9 @@ ARedFlyingBookBullet::ARedFlyingBookBullet()
 	BulletFlipbook->SetFlipbook(Bullet.Object);
 }
 
-void ARedFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* UnitInstigator)
+void ARedFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* InstigatorData)
 {
-	Super::Init(SpawnLocation, FireRotation, UnitInstigator);
+	Super::Init(SpawnLocation, FireRotation, InstigatorData);
 
 	Movement->MaxSpeed = 500.0f;
 }

@@ -10,6 +10,7 @@
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 ABaseTank::ABaseTank()
 	: AUnit(EUnitTag::TANK)
@@ -38,11 +39,67 @@ ABaseTank::ABaseTank()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	for (int i = 0; i < KindOfStatus; i++)
+		UpgradeLevel.Add(0);
+
+	BaseMaxHP = UnitData->Status.HP;
+	UpgradeRatio = 0.05f;
 }
 
 void ABaseTank::Init()
 {
+	int i, j;
+
 	Super::Init();
+
+	if (!Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->GetPlaying())
+	{
+		for (i = 0; i < KindOfStatus; i++)
+			UpgradeLevel[i] = 0;
+	}
+
+	BaseStatus.HP = BaseMaxHP;
+
+	for (i = 0; i < KindOfStatus; i++)
+	{
+		for (j = 0; j < UpgradeLevel[i]; j++)
+		{
+			switch (static_cast<EUpgradeStatus>(i))
+			{
+			case EUpgradeStatus::HP:
+				CurrentStatus.HP += (BaseMaxHP * UpgradeRatio);
+				BaseStatus.HP = CurrentStatus.HP;
+				break;
+
+			case EUpgradeStatus::ATK:
+				CurrentStatus.ATK += (BaseStatus.ATK * UpgradeRatio);
+				break;
+
+			case EUpgradeStatus::ATKSPEED:
+				CurrentStatus.AttackSpeed += (BaseStatus.AttackSpeed * UpgradeRatio);
+				break;
+
+			case EUpgradeStatus::DEF:
+				CurrentStatus.DEF += (BaseStatus.DEF * UpgradeRatio * UpgradeRatio);
+				break;
+
+			case EUpgradeStatus::MOVESPEED:
+				CurrentStatus.MoveSpeed += (BaseStatus.MoveSpeed * UpgradeRatio);
+				break;
+
+			case EUpgradeStatus::RANGE:
+				CurrentStatus.Range += (BaseStatus.Range * UpgradeRatio);
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+
+	Movement->MaxSpeed = CurrentStatus.MoveSpeed;
+	Movement->TurningBoost = CurrentStatus.MoveSpeed;
 
 	Score = UnitData->Score;
 
@@ -116,6 +173,12 @@ void ABaseTank::GetItem(AItem* Item)
 void ABaseTank::AddScore(int NewScore)
 {
 	Score += NewScore;
+}
+
+void ABaseTank::Upgrade(EUpgradeStatus UpgradeStatus)
+{
+	if (Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->PayScore())
+		UpgradeLevel[UpgradeStatus]++;
 }
 
 void ABaseTank::BeginPlay()

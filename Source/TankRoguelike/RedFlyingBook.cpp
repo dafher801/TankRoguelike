@@ -22,8 +22,6 @@ ARedFlyingBook::ARedFlyingBook()
 void ARedFlyingBook::Init()
 {
 	Super::Init();
-
-	SetActorLocation(FVector(200.0f, -600.0f, 10.0f));
 }
 
 void ARedFlyingBook::Tick(float DeltaTime)

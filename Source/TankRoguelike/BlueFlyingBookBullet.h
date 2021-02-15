@@ -14,7 +14,7 @@ public:
 
 	ABlueFlyingBookBullet();
 
-	virtual void Init(FVector SpawnLocation, FRotator FireRotation, class AUnit* UnitInstigator) override;
+	virtual void Init(FVector SpawnLocation, FRotator FireRotation, class AUnit* InstigatorData) override;
 
 	virtual void Tick(float DeltaTime) override;
 
@@ -25,8 +25,4 @@ protected:
 private:
 
 	AActor* PlayerActor;
-
-	float MaxTheta;
-	float DistanceForRotate;
-	float RestForRotate;
 };

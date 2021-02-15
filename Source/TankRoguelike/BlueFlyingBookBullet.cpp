@@ -22,9 +22,9 @@ ABlueFlyingBookBullet::ABlueFlyingBookBullet()
 	BulletFlipbook->SetFlipbook(Bullet.Object);
 }
 
-void ABlueFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* UnitInstigator)
+void ABlueFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* InstigatorData)
 {
-	Super::Init(SpawnLocation, FireRotation, UnitInstigator);
+	Super::Init(SpawnLocation, FireRotation, InstigatorData);
 }
 
 void ABlueFlyingBookBullet::Tick(float DeltaTime)

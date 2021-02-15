@@ -14,6 +14,7 @@
 
 AUnit::AUnit(const EUnitTag& UnitTag)
 	: UnitTag(UnitTag)
+	, KindOfStatus(6)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -22,6 +23,7 @@ AUnit::AUnit(const EUnitTag& UnitTag)
 	UnitData = UnitDataTable.Object->FindRow<FUnitData>(
 		UnitDataTable.Object->GetRowNames()[static_cast<int>(UnitTag)], FString(""));
 
+	BaseStatus = UnitData->Status;
 	Score = UnitData->Score;
 
 	switch (UnitData->ActorCollisionShape)
@@ -63,18 +65,15 @@ void AUnit::Init()
 {
 	SetActivated(true);
 
-	BaseStatus = UnitData->Status;
 	CurrentStatus = BaseStatus;
-
-	Movement->MaxSpeed = CurrentStatus.MoveSpeed;
-	Movement->TurningBoost = CurrentStatus.MoveSpeed;
 
 	bIsEnableAttack = true;
 	TimeElapsedSinceAttack = 0.0f;
 
 	SetActorRotation(UnitData->CollisionRotation);
 
-	WeaponComponent->Init();
+	if (WeaponComponent)
+		WeaponComponent->Init();
 }
 
 void AUnit::Tick(float DeltaTime)
@@ -90,7 +89,11 @@ void AUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 float AUnit::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	DamageAmount -= CurrentStatus.DEF;
-	CurrentStatus.HP -= DamageAmount;
+
+	if (DamageAmount > 0)
+		CurrentStatus.HP -= DamageAmount;
+	else
+		DamageAmount = 0;
 
 	if (CurrentStatus.HP <= 0.0f)
 	{
@@ -113,7 +116,10 @@ bool AUnit::GetActivated() const
 void AUnit::SetActivated(bool Activated)
 {
 	bActivated = Activated;
-	Movement->SetActive(bActivated);
+	
+	if (Movement)
+		Movement->SetActive(bActivated);
+
 	SetActorHiddenInGame(!bActivated);
 	SetActorTickEnabled(bActivated);
 	SetActorEnableCollision(bActivated);

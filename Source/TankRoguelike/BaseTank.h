@@ -5,6 +5,17 @@
 #include "Unit.h"
 #include "BaseTank.generated.h"
 
+UENUM(BlueprintType)
+enum EUpgradeStatus
+{
+	HP,
+	ATK,
+	ATKSPEED,
+	DEF,
+	MOVESPEED,
+	RANGE
+};
+
 UCLASS()
 class TANKROGUELIKE_API ABaseTank : public AUnit
 {
@@ -25,6 +36,9 @@ public:
 	virtual void GetItem(class AItem* Item);
 
 	void AddScore(int NewScore);
+
+	UFUNCTION(BlueprintCallable)
+		void Upgrade(EUpgradeStatus UpgradeStatus);
 
 protected:
 
@@ -49,6 +63,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
 		class UCameraComponent* Camera;
 
+	UPROPERTY(BlueprintReadOnly)
+		TArray<int> UpgradeLevel;
+
 	TArray<class AItem*> Items;
 
 	// 플레이어 방향키 입력
@@ -57,4 +74,6 @@ protected:
 
 	bool bPressedLeftMouse;
 	float PressedTimeLeftMouse;
+
+	float BaseMaxHP;
 };

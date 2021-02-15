@@ -22,8 +22,6 @@ ABlueFlyingBook::ABlueFlyingBook()
 void ABlueFlyingBook::Init()
 {
 	Super::Init();
-
-	SetActorLocation(FVector(100.0f, 600.0f, 10.0f));
 }
 
 void ABlueFlyingBook::Tick(float DeltaTime)

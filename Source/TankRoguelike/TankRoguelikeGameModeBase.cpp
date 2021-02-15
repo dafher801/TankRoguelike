@@ -4,6 +4,7 @@
 #include "GreenFlyingBook.h"
 #include "RedFlyingBook.h"
 #include "BlueFlyingBook.h"
+#include "YellowFlyingBook.h"
 #include "WeaponComponent.h"
 #include "UnitDataTable.h"
 #include "HPItem.h"
@@ -19,10 +20,11 @@
 ATankRoguelikeGameModeBase::ATankRoguelikeGameModeBase()
 	: NecessaryTimeForSpawn(2000.0f)
 	, CurrentTimeForSpawn(0.0f)
-	, KindOfEnemyNum(3)
+	, KindOfEnemyNum(4)
 	, MaxEnemyNum(10)
 	, CurrentEnemyNum(0)
 	, CurrentItemNum(0)
+	, CurrentStage(0)
 	, bPlaying(false)
 	, TotalScore(0)
 {
@@ -30,7 +32,7 @@ ATankRoguelikeGameModeBase::ATankRoguelikeGameModeBase()
 
 	static UDataTableAsset UnitDataTableFile = TEXT("/Game/DataTables/UnitDataTable");
 
-	for (int i = 0; i < KindOfEnemyNum; i++)
+	for (int i = 0; i < KindOfEnemyNum + 1; i++)
 		EnemyObjectPool.Add(TArray<AEnemy*>());
 
 	PlayerControllerClass = ATankRoguelikePlayerController::StaticClass();
@@ -40,25 +42,6 @@ ATankRoguelikeGameModeBase::ATankRoguelikeGameModeBase()
 void ATankRoguelikeGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void ATankRoguelikeGameModeBase::SpawnItem(FVector SpawnLocation)
-{
-	if (rand() % 2)
-		return;
-
-	if (CurrentItemNum >= 10)
-		CurrentItemNum = 0;
-
-	for (int i = CurrentItemNum++; i < 10; i++)
-	{
-		if (!ItemObjectPool[i]->GetActivated())
-		{
-			ItemObjectPool[i]->Init();
-			ItemObjectPool[i]->SetActorLocation(SpawnLocation);
-			return;
-		}
-	}
 }
 
 void ATankRoguelikeGameModeBase::SpawnEnemy()
@@ -92,6 +75,25 @@ void ATankRoguelikeGameModeBase::SpawnEnemy()
 		CurrentEnemyNum = 0;
 }
 
+void ATankRoguelikeGameModeBase::SpawnItem(FVector SpawnLocation)
+{
+	if (rand() % 2)
+		return;
+
+	if (CurrentItemNum >= 10)
+		CurrentItemNum = 0;
+
+	for (int i = CurrentItemNum++; i < 10; i++)
+	{
+		if (!ItemObjectPool[i]->GetActivated())
+		{
+			ItemObjectPool[i]->Init();
+			ItemObjectPool[i]->SetActorLocation(SpawnLocation);
+			return;
+		}
+	}
+}
+
 void ATankRoguelikeGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidget)
 {
 	if (CurrentWidget)
@@ -111,14 +113,18 @@ void ATankRoguelikeGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidget
 
 void ATankRoguelikeGameModeBase::StartGame()
 {
-	bPlaying = true;
 	Player->Init();
+	Player->AddScore(TotalScore);
+
+	bPlaying = true;
+	++CurrentStage;
 
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetPause(false);
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ATankRoguelikeGameModeBase::SpawnEnemy, 2.0f, true);
+	GetWorldTimerManager().SetTimer(CountDownTimer, this, &ATankRoguelikeGameModeBase::CountDown, 1.0f, true);
+	GetWorldTimerManager().SetTimer(SpawnEnemyTimer, this, &ATankRoguelikeGameModeBase::SpawnEnemy, 2.0f, true);
 }
 
-void ATankRoguelikeGameModeBase::ClearGame()
+void ATankRoguelikeGameModeBase::InitGame()
 {
 	int i, j;
 
@@ -144,8 +150,13 @@ void ATankRoguelikeGameModeBase::ClearGame()
 		}
 	}
 
-	bPlaying = false;
-	TotalScore = 0;
+	if (!bPlaying)
+	{
+		TotalScore = 0;
+		CurrentStage = 0;
+	}
+	
+	CountDownTime = 100;
 
 	Player->SetActivated(false);
 	Player->GetWeaponComponent()->SetActivated(false);
@@ -155,6 +166,30 @@ void ATankRoguelikeGameModeBase::ClearGame()
 ABaseTank* ATankRoguelikeGameModeBase::GetPlayer() const
 {
 	return Player;
+}
+
+int ATankRoguelikeGameModeBase::GetCurrentStage() const
+{
+	return CurrentStage;
+}
+
+int ATankRoguelikeGameModeBase::GetCountDownTime() const
+{
+	return CountDownTime;
+}
+
+bool ATankRoguelikeGameModeBase::GetPlaying() const
+{
+	return bPlaying;
+}
+
+bool ATankRoguelikeGameModeBase::PayScore()
+{
+	if (TotalScore < 100)
+		return false;
+
+	TotalScore -= 100;
+	return true;
 }
 
 void ATankRoguelikeGameModeBase::BeginPlay()
@@ -174,6 +209,17 @@ void ATankRoguelikeGameModeBase::BeginPlay()
 		EnemyObjectPool[static_cast<int>(EUnitTag::BLUEFLYINGBOOK) - 1].
 			Add(Cast<ABlueFlyingBook>(GetWorld()->SpawnActor(ABlueFlyingBook::StaticClass())));
 
+		EnemyObjectPool[static_cast<int>(EUnitTag::YELLOWFLYINGBOOK) - 1].
+			Add(Cast<AYellowFlyingBook>(GetWorld()->SpawnActor(AYellowFlyingBook::StaticClass())));
+
 		ItemObjectPool.Add(Cast<AHPItem>(GetWorld()->SpawnActor(AHPItem::StaticClass())));
 	}
+}
+
+void ATankRoguelikeGameModeBase::CountDown()
+{
+	--CountDownTime;
+
+	if (CountDownTime <= 0)
+		StageClear();
 }
