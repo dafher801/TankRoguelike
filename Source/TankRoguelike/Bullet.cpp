@@ -67,8 +67,6 @@ void ABullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* Instigat
 	SetActorRotation(FireRotation + BulletData->CollisionRotation);
 	SetInstigator(InstigatorData);
 
-	Movement->Velocity = FireRotation.Vector() * Movement->InitialSpeed;
-
 	Damage = InstigatorData->GetCurrentStatus().ATK;
 	MaxMovementDistance = InstigatorData->GetCurrentStatus().Range;
 	CurrentMovementDistance = 0.0f;

@@ -29,7 +29,10 @@ public:
 
 	virtual void Aim();
 
-	void SetActivated(bool Activated);
+	virtual bool GetActivated() const;
+	virtual void SetActivated(bool Activated);
+
+	virtual void ClearBullets() const;
 
 protected:
 
@@ -49,4 +52,6 @@ protected:
 	FRotator FireRotation;
 
 	int BulletNum;
+
+	bool bActivated;
 };

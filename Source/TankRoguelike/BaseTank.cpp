@@ -33,7 +33,7 @@ ABaseTank::ABaseTank()
 	SpringArm->bInheritRoll = false;
 	SpringArm->bInheritYaw = false;
 	SpringArm->SetWorldRotation(FRotator(-90.0f, 0.0f, 0.0f));
-	SpringArm->TargetArmLength = 800.0f;
+	SpringArm->TargetArmLength = 1000.0f;
 	SpringArm->bDoCollisionTest = false;
 	SpringArm->SetupAttachment(ShapeCollision);
 
@@ -99,7 +99,7 @@ void ABaseTank::Init()
 	}
 
 	Movement->MaxSpeed = CurrentStatus.MoveSpeed;
-	Movement->TurningBoost = CurrentStatus.MoveSpeed;
+	Movement->TurningBoost = Movement->MaxSpeed;
 
 	Score = UnitData->Score;
 

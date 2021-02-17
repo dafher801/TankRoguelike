@@ -1,18 +1,32 @@
 
 #include "YellowFlyingBookWeapon.h"
 #include "YellowFlyingBookBullet.h"
+#include "YellowFlyingBookBulletCenter.h"
 #include "Kismet/GameplayStatics.h"
 
 UYellowFlyingBookWeapon::UYellowFlyingBookWeapon()
 	: UWeaponComponent(EUnitTag::YELLOWFLYINGBOOK)
+	, MaxBulletCenterNum(5)
+	, CurrentBulletCenterNum(0)
 {
 }
 
 void UYellowFlyingBookWeapon::InitFire(AUnit* InstigatorData)
 {
-	Super::InitFire(InstigatorData);
-}
+	if (CurrentBulletCenterNum >= MaxBulletCenterNum)
+		CurrentBulletCenterNum = 0;
 
+	for (int i = CurrentBulletCenterNum++; i < MaxBulletCenterNum; i++)
+	{
+		if (!CenterObjectPool[i]->GetActivated())
+		{
+			CenterObjectPool[i]->Init(GetComponentLocation(),
+				FireRotation + WeaponData->RevisedFireRotation, InstigatorData);
+
+			return;
+		}
+	}
+}
 
 void UYellowFlyingBookWeapon::Aim()
 {
@@ -24,10 +38,21 @@ void UYellowFlyingBookWeapon::Aim()
 	Super::Aim();
 }
 
+void UYellowFlyingBookWeapon::ClearBullets() const
+{
+	for (int i = 0; i < MaxBulletCenterNum; i++)
+		CenterObjectPool[i]->ClearBullets();
+}
+
 void UYellowFlyingBookWeapon::BeginPlay()
 {
+	int i;
+
 	Super::BeginPlay();
 
-	for (int i = 0; i < WeaponData->MaxBulletNum; i++)
-		BulletObjectPool.Add(GetWorld()->SpawnActor<AYellowFlyingBookBullet>(AYellowFlyingBookBullet::StaticClass()));
+	for (i = 0; i < MaxBulletCenterNum; i++)
+	{
+		CenterObjectPool.Add(GetWorld()->SpawnActor
+			<AYellowFlyingBookBulletCenter>(AYellowFlyingBookBulletCenter::StaticClass()));
+	}
 }

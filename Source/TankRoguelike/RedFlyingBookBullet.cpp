@@ -19,5 +19,5 @@ void ARedFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AU
 {
 	Super::Init(SpawnLocation, FireRotation, InstigatorData);
 
-	Movement->MaxSpeed = 500.0f;
+	Movement->Velocity = FireRotation.Vector() * Movement->InitialSpeed;
 }

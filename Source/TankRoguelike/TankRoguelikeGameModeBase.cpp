@@ -18,21 +18,22 @@
 #include <ctime>
 
 ATankRoguelikeGameModeBase::ATankRoguelikeGameModeBase()
-	: NecessaryTimeForSpawn(2000.0f)
+	: TotalScore(0)
+	, bPlaying(false)
+	, NecessaryTimeForSpawn(2000.0f)
 	, CurrentTimeForSpawn(0.0f)
 	, KindOfEnemyNum(4)
 	, MaxEnemyNum(10)
 	, CurrentEnemyNum(0)
 	, CurrentItemNum(0)
 	, CurrentStage(0)
-	, bPlaying(false)
-	, TotalScore(0)
+	, CountDownTime(0)
 {
 	srand((int)time(NULL));
 
 	static UDataTableAsset UnitDataTableFile = TEXT("/Game/DataTables/UnitDataTable");
 
-	for (int i = 0; i < KindOfEnemyNum + 1; i++)
+	for (int i = 0; i < KindOfEnemyNum; i++)
 		EnemyObjectPool.Add(TArray<AEnemy*>());
 
 	PlayerControllerClass = ATankRoguelikePlayerController::StaticClass();
@@ -132,10 +133,11 @@ void ATankRoguelikeGameModeBase::InitGame()
 	{
 		for (j = 0; j < MaxEnemyNum; j++)
 		{
-			if (EnemyObjectPool[i][j]->GetActivated())
+			if (EnemyObjectPool[i][j]->GetActivated() || 
+				EnemyObjectPool[i][j]->GetWeaponComponent()->GetActivated())
 			{
 				EnemyObjectPool[i][j]->SetActivated(false);
-				EnemyObjectPool[i][j]->GetWeaponComponent()->SetActivated(false);
+				EnemyObjectPool[i][j]->GetWeaponComponent()->ClearBullets();
 				EnemyObjectPool[i][j]->SetActorLocation(FVector(0.0f, 0.0f, 0.0f));
 			}
 		}
@@ -159,7 +161,7 @@ void ATankRoguelikeGameModeBase::InitGame()
 	CountDownTime = 100;
 
 	Player->SetActivated(false);
-	Player->GetWeaponComponent()->SetActivated(false);
+	Player->GetWeaponComponent()->ClearBullets();
 	Player->SetActorLocation(FVector(0.0f, 0.0f, 0.0f));
 }
 
@@ -214,6 +216,8 @@ void ATankRoguelikeGameModeBase::BeginPlay()
 
 		ItemObjectPool.Add(Cast<AHPItem>(GetWorld()->SpawnActor(AHPItem::StaticClass())));
 	}
+
+	InitGame();
 }
 
 void ATankRoguelikeGameModeBase::CountDown()

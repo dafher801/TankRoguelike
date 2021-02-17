@@ -18,7 +18,17 @@ public:
 
 	virtual void Aim() override;
 
+	virtual void ClearBullets() const;
+
 protected:
 
 	virtual void BeginPlay() override;
+
+private:
+
+	UPROPERTY()
+		TArray<class AYellowFlyingBookBulletCenter*> CenterObjectPool;
+
+	int CurrentBulletCenterNum;
+	int MaxBulletCenterNum;
 };

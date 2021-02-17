@@ -19,6 +19,8 @@ ABaseTankBullet::ABaseTankBullet()
 void ABaseTankBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* InstigatorData)
 {
 	Super::Init(SpawnLocation, FireRotation, InstigatorData);
+
+	Movement->Velocity = FireRotation.Vector() * Movement->InitialSpeed;
 }
 
 void ABaseTankBullet::Tick(float DeltaTime)

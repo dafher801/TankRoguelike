@@ -13,6 +13,7 @@
 UWeaponComponent::UWeaponComponent(const EUnitTag& UnitTag)
 	: WeaponFlipbook(nullptr)
 	, BulletNum(0)
+	, bActivated(false)
 {
 	static UDataTableAsset WeaponDataTable = TEXT("/Game/DataTables/WeaponDataTable");
 	WeaponData = WeaponDataTable.Object->FindRow<FWeaponData>(
@@ -22,6 +23,8 @@ UWeaponComponent::UWeaponComponent(const EUnitTag& UnitTag)
 void UWeaponComponent::Init()
 {
 	BulletNum = 0;
+
+	SetActivated(true);
 }
 
 void UWeaponComponent::InitFire(AUnit* InstigatorData)
@@ -48,6 +51,7 @@ void UWeaponComponent::Aim()
 
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->
 		ProjectWorldLocationToScreen(GetComponentLocation(), UnitScreen, true);
+
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->
 		ProjectWorldLocationToScreen(TargetLocation, TargetScreen, true);
 
@@ -57,12 +61,20 @@ void UWeaponComponent::Aim()
 		WeaponFlipbook->SetWorldRotation(FireRotation + WeaponData->FlipbookRotation);
 }
 
+bool UWeaponComponent::GetActivated() const
+{
+	return bActivated;
+}
+
 void UWeaponComponent::SetActivated(bool Activated)
 {
+	bActivated = Activated;
+}
+
+void UWeaponComponent::ClearBullets() const
+{
 	for (int i = 0; i < WeaponData->MaxBulletNum; i++)
-	{
-		BulletObjectPool[i]->SetActivated(Activated);
-	}
+		BulletObjectPool[i]->SetActivated(false);
 }
 
 void UWeaponComponent::BeginPlay()

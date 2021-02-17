@@ -110,6 +110,7 @@ void AUnit::OnHit(UPrimitiveComponent* OtherComp, AActor* OtherActor, UPrimitive
 
 bool AUnit::GetActivated() const
 {
+	UE_LOG(LogClass, Warning, TEXT("%d"), static_cast<int>(UnitTag));
 	return bActivated;
 }
 
@@ -119,6 +120,9 @@ void AUnit::SetActivated(bool Activated)
 	
 	if (Movement)
 		Movement->SetActive(bActivated);
+
+	if (WeaponComponent)
+		WeaponComponent->SetActivated(bActivated);
 
 	SetActorHiddenInGame(!bActivated);
 	SetActorTickEnabled(bActivated);

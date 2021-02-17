@@ -20,4 +20,6 @@ AGreenFlyingBookBullet::AGreenFlyingBookBullet()
 void AGreenFlyingBookBullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* InstigatorData)
 {
 	Super::Init(SpawnLocation, FireRotation, InstigatorData);
+
+	Movement->Velocity = FireRotation.Vector() * Movement->InitialSpeed;
 }
