@@ -53,13 +53,8 @@ void ABaseTank::Init()
 
 	Super::Init();
 
-	if (!Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->GetPlaying())
-	{
-		for (i = 0; i < KindOfStatus; i++)
-			UpgradeLevel[i] = 0;
-	}
-
 	BaseStatus.HP = BaseMaxHP;
+	CurrentStatus.HP = BaseMaxHP;
 
 	for (i = 0; i < KindOfStatus; i++)
 	{
@@ -159,6 +154,7 @@ float ABaseTank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
 	if (CurrentStatus.HP <= 0.0f)
 	{
 		CurrentStatus.HP = 0.0f;
+
 		Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->GameOver();
 	}
 
@@ -177,8 +173,17 @@ void ABaseTank::AddScore(int NewScore)
 
 void ABaseTank::Upgrade(EUpgradeStatus UpgradeStatus)
 {
-	if (Cast<ATankRoguelikeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->PayScore())
+	if (Cast<ATankRoguelikeGameModeBase>
+		(UGameplayStatics::GetGameMode(GetWorld()))->PayScore(UpgradeLevel[UpgradeStatus]))
+	{
 		UpgradeLevel[UpgradeStatus]++;
+	}
+}
+
+void ABaseTank::InitLevel()
+{
+	for (int i = 0; i < KindOfStatus; i++)
+		UpgradeLevel[i] = 0;
 }
 
 void ABaseTank::BeginPlay()

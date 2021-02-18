@@ -28,6 +28,8 @@ ATankRoguelikeGameModeBase::ATankRoguelikeGameModeBase()
 	, CurrentItemNum(0)
 	, CurrentStage(0)
 	, CountDownTime(0)
+	, BaseUpgradePay(100)
+	, AdditionalPay(50)
 {
 	srand((int)time(NULL));
 
@@ -133,13 +135,9 @@ void ATankRoguelikeGameModeBase::InitGame()
 	{
 		for (j = 0; j < MaxEnemyNum; j++)
 		{
-			if (EnemyObjectPool[i][j]->GetActivated() || 
-				EnemyObjectPool[i][j]->GetWeaponComponent()->GetActivated())
-			{
-				EnemyObjectPool[i][j]->SetActivated(false);
-				EnemyObjectPool[i][j]->GetWeaponComponent()->ClearBullets();
-				EnemyObjectPool[i][j]->SetActorLocation(FVector(0.0f, 0.0f, 0.0f));
-			}
+			EnemyObjectPool[i][j]->SetActivated(false);
+			EnemyObjectPool[i][j]->GetWeaponComponent()->ClearBullets();
+			EnemyObjectPool[i][j]->SetActorLocation(FVector(0.0f, 0.0f, 0.0f));
 		}
 	}
 
@@ -156,6 +154,9 @@ void ATankRoguelikeGameModeBase::InitGame()
 	{
 		TotalScore = 0;
 		CurrentStage = 0;
+
+		Player->InitLevel();
+		Player->GetWeaponComponent()->InitSpeedLevel();
 	}
 	
 	CountDownTime = 100;
@@ -185,12 +186,12 @@ bool ATankRoguelikeGameModeBase::GetPlaying() const
 	return bPlaying;
 }
 
-bool ATankRoguelikeGameModeBase::PayScore()
+bool ATankRoguelikeGameModeBase::PayScore(int StatusLevel)
 {
-	if (TotalScore < 100)
+	if (TotalScore < (BaseUpgradePay + StatusLevel * AdditionalPay))
 		return false;
 
-	TotalScore -= 100;
+	TotalScore -= (BaseUpgradePay + StatusLevel * AdditionalPay);
 	return true;
 }
 

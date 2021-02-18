@@ -29,6 +29,9 @@ public:
 	bool GetActivated() const;
 	void SetActivated(bool Activated);
 
+	void InitSpeedLevel();
+	void SpeedLevelUp();
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -55,6 +58,8 @@ protected:
 	float CurrentMovementDistance;
 
 	int Damage;
+	int SpeedLevel;
+	int SpeedUpgradeRatio;
 
 	bool bActivated;
 };

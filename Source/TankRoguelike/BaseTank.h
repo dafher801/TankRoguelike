@@ -40,6 +40,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void Upgrade(EUpgradeStatus UpgradeStatus);
 
+	void InitLevel();
+
 protected:
 
 	virtual void BeginPlay() override;

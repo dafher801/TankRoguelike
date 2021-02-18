@@ -34,6 +34,9 @@ public:
 
 	virtual void ClearBullets() const;
 
+	virtual void InitSpeedLevel() const;
+	virtual void SpeedLevelUp() const;
+
 protected:
 
 	virtual void BeginPlay() override;

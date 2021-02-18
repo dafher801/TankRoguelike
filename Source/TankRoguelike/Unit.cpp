@@ -110,7 +110,6 @@ void AUnit::OnHit(UPrimitiveComponent* OtherComp, AActor* OtherActor, UPrimitive
 
 bool AUnit::GetActivated() const
 {
-	UE_LOG(LogClass, Warning, TEXT("%d"), static_cast<int>(UnitTag));
 	return bActivated;
 }
 

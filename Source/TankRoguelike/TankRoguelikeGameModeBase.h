@@ -48,7 +48,7 @@ public:
 	UFUNCTION()
 		bool GetPlaying() const;
 
-	bool PayScore();
+	bool PayScore(int StatusLevel);
 
 protected:
 
@@ -91,4 +91,7 @@ protected:
 	int CurrentStage;
 
 	int CountDownTime;
+
+	int BaseUpgradePay;
+	int AdditionalPay;
 };

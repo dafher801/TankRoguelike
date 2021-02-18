@@ -14,6 +14,8 @@ ABullet::ABullet(const EUnitTag& UnitTag)
 	: MaxMovementDistance(0.0f)
 	, CurrentMovementDistance(0.0f)
 	, Damage(0.0f)
+	, SpeedLevel(0)
+	, SpeedUpgradeRatio(0.1f)
 	, bActivated(false)
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -72,6 +74,14 @@ void ABullet::Init(FVector SpawnLocation, FRotator FireRotation, AUnit* Instigat
 	CurrentMovementDistance = 0.0f;
 
 	SetActivated(true);
+
+	for (int i = 0; i < SpeedLevel; i++)
+	{
+		Movement->MaxSpeed = BulletData->Status.MoveSpeed +
+			(BulletData->Status.MoveSpeed * SpeedUpgradeRatio);
+	}
+
+	Movement->InitialSpeed = Movement->MaxSpeed;
 }
 
 void ABullet::Tick(float DeltaTime)
@@ -105,6 +115,16 @@ void ABullet::SetActivated(bool Activated)
 	SetActorHiddenInGame(!bActivated);
 	SetActorTickEnabled(bActivated);
 	SetActorEnableCollision(bActivated);
+}
+
+void ABullet::InitSpeedLevel()
+{
+	SpeedLevel = 0;
+}
+
+void ABullet::SpeedLevelUp()
+{
+	SpeedLevel++;
 }
 
 void ABullet::BeginPlay()

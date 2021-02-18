@@ -77,6 +77,18 @@ void UWeaponComponent::ClearBullets() const
 		BulletObjectPool[i]->SetActivated(false);
 }
 
+void UWeaponComponent::InitSpeedLevel() const
+{
+	for (int i = 0; i < WeaponData->MaxBulletNum; i++)
+		BulletObjectPool[i]->InitSpeedLevel();
+}
+
+void UWeaponComponent::SpeedLevelUp() const
+{
+	for (int i = 0; i < WeaponData->MaxBulletNum; i++)
+		BulletObjectPool[i]->SpeedLevelUp();
+}
+
 void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();

@@ -30,7 +30,7 @@ void ABlueFlyingBookBullet::Tick(float DeltaTime)
 		Super::Tick(DeltaTime);
 
 		SetActorRotation((PlayerActor->GetActorLocation() - GetActorLocation()).Rotation() + BulletData->CollisionRotation);
-		Movement->Velocity = (PlayerActor->GetActorLocation() - GetActorLocation()).Rotation().Vector() * Movement->MaxSpeed;
+		Movement->Velocity = (PlayerActor->GetActorLocation() - GetActorLocation()).Rotation().Vector() * Movement->InitialSpeed;
 	}
 }
 
